@@ -4,6 +4,7 @@ If you don't have internet connection and wanted to listen your favourite podcas
 Dependencies:
 
 pip install BeautifulSoup4
+
 pip install requests
 
 
