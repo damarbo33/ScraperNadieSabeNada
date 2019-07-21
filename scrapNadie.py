@@ -7,7 +7,7 @@ import requests
 
 DOMAIN = "http://play.cadenaser.com"
 URL = DOMAIN + "/programa/nadie_sabe_nada"
-DOWNLOAD_DIR = "C:/audio/"
+DOWNLOAD_DIR = "F:/Descargas/Jdownloader/audio/"
 translation_table = dict.fromkeys(map(ord, '?.!/;:@#$"'), None)
 
 class Podcast:
@@ -92,9 +92,17 @@ def getAudioFile(urlpodcast):
 ############################################
 def downloadRequest(url, filename):
     r = requests.get(url, stream=True)
+    total = int(r.headers.get('content-length'))
+    downloaded = 0
+    print("Response: %s" % r.status_code)
     with open(filename, 'wb') as f:
-        for chunk in r.iter_content():
+        for chunk in r.iter_content(chunk_size=max(int(total/1000), 1024*1024)):
+            downloaded += len(chunk)
+            done = int(50*downloaded/total)
             f.write(chunk)
+            print ('\r[{}{}]'.format('█' * done, '.' * (50-done)), end="\r")
+            
+            
 
 #########################################################################
 #main
